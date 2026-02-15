@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISPS Architecture Diagram</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .diagram {
+    width: 960px;
+    padding: 36px;
+    border: 2px solid #1e293b;
+    border-radius: 12px;
+    background: #fff;
+  }
+  .title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 32px;
+  }
+
+  /* ── Layer sections ──────────────────────── */
+  .layer {
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .layer-label {
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #94a3b8;
+    white-space: nowrap;
+  }
+  .layer-content {
+    margin-left: 32px;
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Boxes ───────────────────────────────── */
+  .box {
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: center;
+    min-width: 140px;
+    position: relative;
+  }
+  .box-icon { font-size: 22px; margin-bottom: 6px; }
+  .box-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .box-desc { font-size: 10.5px; color: #64748b; line-height: 1.4; }
+  .box-tech { font-size: 9.5px; font-weight: 600; margin-top: 6px; padding: 2px 8px; border-radius: 4px; display: inline-block; }
+
+  /* Color themes */
+  .blue    { border-color: #3b82f6; background: #eff6ff; }
+  .blue .box-title { color: #1d4ed8; }
+  .blue .box-tech { background: #dbeafe; color: #1e40af; }
+
+  .green   { border-color: #22c55e; background: #f0fdf4; }
+  .green .box-title { color: #15803d; }
+  .green .box-tech { background: #dcfce7; color: #166534; }
+
+  .purple  { border-color: #8b5cf6; background: #f5f3ff; }
+  .purple .box-title { color: #6d28d9; }
+  .purple .box-tech { background: #ede9fe; color: #5b21b6; }
+
+  .orange  { border-color: #f59e0b; background: #fffbeb; }
+  .orange .box-title { color: #b45309; }
+  .orange .box-tech { background: #fef3c7; color: #92400e; }
+
+  .red     { border-color: #ef4444; background: #fef2f2; }
+  .red .box-title { color: #b91c1c; }
+  .red .box-tech { background: #fee2e2; color: #991b1b; }
+
+  .slate   { border-color: #475569; background: #f8fafc; }
+  .slate .box-title { color: #1e293b; }
+  .slate .box-tech { background: #e2e8f0; color: #334155; }
+
+  .teal    { border-color: #14b8a6; background: #f0fdfa; }
+  .teal .box-title { color: #0f766e; }
+  .teal .box-tech { background: #ccfbf1; color: #115e59; }
+
+  /* ── Arrows ──────────────────────────────── */
+  .arrows {
+    display: flex;
+    justify-content: center;
+    padding: 6px 0;
+    gap: 80px;
+    margin-left: 32px;
+  }
+  .arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #94a3b8;
+    font-size: 10px;
+    gap: 1px;
+  }
+  .arrow-line {
+    width: 2px;
+    height: 16px;
+    background: #cbd5e1;
+  }
+  .arrow-head {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #cbd5e1;
+  }
+  .arrow-label {
+    font-size: 9px;
+    color: #94a3b8;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Wide arrow section ──────────────────── */
+  .wide-arrows {
+    display: flex;
+    justify-content: center;
+    padding: 6px 0;
+    margin-left: 32px;
+  }
+  .wide-arrow-group {
+    display: flex;
+    gap: 60px;
+  }
+
+  /* ── Divider ─────────────────────────────── */
+  .divider {
+    border: none;
+    border-top: 1px dashed #e2e8f0;
+    margin: 16px 32px;
+  }
+
+  /* ── Output pages row ────────────────────── */
+  .pages-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-left: 32px;
+  }
+  .page-tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1.5px solid;
+  }
+  .page-tag.p1 { border-color: #3b82f6; color: #1d4ed8; background: #eff6ff; }
+  .page-tag.p2 { border-color: #8b5cf6; color: #6d28d9; background: #f5f3ff; }
+  .page-tag.p3 { border-color: #22c55e; color: #15803d; background: #f0fdf4; }
+  .page-tag.p4 { border-color: #f59e0b; color: #b45309; background: #fffbeb; }
+  .page-tag.p5 { border-color: #ef4444; color: #b91c1c; background: #fef2f2; }
+  .page-tag.p6 { border-color: #14b8a6; color: #0f766e; background: #f0fdfa; }
+  .page-tag.p7 { border-color: #475569; color: #1e293b; background: #f8fafc; }
+
+  /* ── Legend ───────────────────────────────── */
+  .legend {
+    margin-top: 24px;
+    margin-left: 32px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: #64748b;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    border: 1.5px solid;
+  }
+
+  /* ── Figure caption ──────────────────────── */
+  .caption {
+    text-align: center;
+    font-size: 12px;
+    color: #475569;
+    margin-top: 20px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<div class="diagram">
+  <div class="title">Intelligent Strategic Plan Synchronisation (ISPS) System</div>
+  <div class="subtitle">System Architecture — Data Flow &amp; Component Interaction</div>
+
+  <!-- LAYER 1: Data Sources -->
+  <div class="layer">
+    <div class="layer-label">Input</div>
+    <div class="layer-content">
+      <div class="box blue" style="min-width: 200px;">
+        <div class="box-icon">📄</div>
+        <div class="box-title">Strategic Plan PDF</div>
+        <div class="box-desc">HHS Vision 2030<br>5 Strategic Objectives, Values,<br>Commitments &amp; Focus Areas</div>
+      </div>
+      <div class="box blue" style="min-width: 200px;">
+        <div class="box-icon">📋</div>
+        <div class="box-title">Action Plan PDF</div>
+        <div class="box-desc">QIP 2025-26<br>10 Action Items with<br>Measures &amp; Targets</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrows">
+    <div class="arrow">
+      <div class="arrow-label">manual extraction</div>
+      <div class="arrow-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+  </div>
+
+  <!-- LAYER 2: Document Processing -->
+  <div class="layer">
+    <div class="layer-label">Process</div>
+    <div class="layer-content">
+      <div class="box green" style="min-width: 340px;">
+        <div class="box-icon">⚙️</div>
+        <div class="box-title">Document Processor</div>
+        <div class="box-desc">Structured extraction of strategic objectives &amp; action items<br>Text chunking for RAG retrieval (500 chars, 100 overlap)</div>
+        <div class="box-tech">document_processor.py</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrows">
+    <div class="arrow">
+      <div class="arrow-label">structured text</div>
+      <div class="arrow-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+  </div>
+
+  <!-- LAYER 3: Embedding & Storage -->
+  <div class="layer">
+    <div class="layer-label">Embed</div>
+    <div class="layer-content">
+      <div class="box purple" style="min-width: 240px;">
+        <div class="box-icon">🧠</div>
+        <div class="box-title">Embedding Model</div>
+        <div class="box-desc">Converts text → 384-dimensional<br>semantic vectors (runs locally)</div>
+        <div class="box-tech">all-MiniLM-L6-v2</div>
+      </div>
+      <div class="box orange" style="min-width: 240px;">
+        <div class="box-icon">🗄️</div>
+        <div class="box-title">Vector Database</div>
+        <div class="box-desc">Stores embeddings in-memory<br>Enables semantic search &amp; retrieval</div>
+        <div class="box-tech">ChromaDB</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrows">
+    <div class="arrow">
+      <div class="arrow-label">vectors</div>
+      <div class="arrow-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+  </div>
+
+  <!-- LAYER 4: Analysis Engine -->
+  <div class="layer">
+    <div class="layer-label">Analyse</div>
+    <div class="layer-content">
+      <div class="box red" style="min-width: 220px;">
+        <div class="box-icon">📐</div>
+        <div class="box-title">Similarity Engine</div>
+        <div class="box-desc">Cosine similarity matrix<br>Alignment scoring &amp; gap detection</div>
+        <div class="box-tech">scikit-learn · analyzer.py</div>
+      </div>
+      <div class="box teal" style="min-width: 220px;">
+        <div class="box-icon">🔗</div>
+        <div class="box-title">Knowledge Graph</div>
+        <div class="box-desc">Entity relationships &amp;<br>ontology-based mapping</div>
+        <div class="box-tech">NetworkX · PyVis</div>
+      </div>
+      <div class="box slate" style="min-width: 220px;">
+        <div class="box-icon">🤖</div>
+        <div class="box-title">LLM Intelligence</div>
+        <div class="box-desc">RAG chat, suggestions,<br>agentic reasoning, reports</div>
+        <div class="box-tech">Google Gemini API</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wide-arrows">
+    <div class="wide-arrow-group">
+      <div class="arrow">
+        <div class="arrow-label">scores &amp; data</div>
+        <div class="arrow-line"></div>
+        <div class="arrow-head"></div>
+      </div>
+      <div class="arrow">
+        <div class="arrow-label">graph</div>
+        <div class="arrow-line"></div>
+        <div class="arrow-head"></div>
+      </div>
+      <div class="arrow">
+        <div class="arrow-label">text responses</div>
+        <div class="arrow-line"></div>
+        <div class="arrow-head"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYER 5: Evaluation -->
+  <div class="layer">
+    <div class="layer-label">Eval</div>
+    <div class="layer-content">
+      <div class="box green" style="min-width: 380px;">
+        <div class="box-icon">✅</div>
+        <div class="box-title">Evaluation Module</div>
+        <div class="box-desc">Precision, Recall, F1-Score computed against ground truth alignment map<br>Threshold optimisation &amp; confusion matrix analysis</div>
+        <div class="box-tech">scikit-learn · evaluation.py</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrows">
+    <div class="arrow">
+      <div class="arrow-label">metrics &amp; visualisations</div>
+      <div class="arrow-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+  </div>
+
+  <!-- LAYER 6: Presentation -->
+  <div class="layer">
+    <div class="layer-label">UI</div>
+    <div class="layer-content">
+      <div class="box slate" style="min-width: 520px; border-width: 3px;">
+        <div class="box-icon">🖥️</div>
+        <div class="box-title">Streamlit Dashboard</div>
+        <div class="box-desc">Interactive multi-page web application with real-time visualisation</div>
+        <div class="box-tech">Streamlit · Plotly · Python</div>
+        <div style="margin-top: 14px;">
+          <div class="pages-row">
+            <span class="page-tag p1">🏠 Home &amp; Overview</span>
+            <span class="page-tag p2">📊 Sync Analysis</span>
+            <span class="page-tag p3">🔍 Strategy Deep Dive</span>
+            <span class="page-tag p4">💡 AI Suggestions</span>
+            <span class="page-tag p5">🔗 Knowledge Graph</span>
+            <span class="page-tag p6">✅ Evaluation</span>
+            <span class="page-tag p7">💬 RAG Chat</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="border-color:#3b82f6; background:#eff6ff;"></div> Data Sources</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#22c55e; background:#f0fdf4;"></div> Processing</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#8b5cf6; background:#f5f3ff;"></div> Embedding</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#f59e0b; background:#fffbeb;"></div> Storage</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#ef4444; background:#fef2f2;"></div> Analysis</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#14b8a6; background:#f0fdfa;"></div> Graph</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#475569; background:#f8fafc;"></div> Interface</div>
+  </div>
+
+  <div class="caption">Figure 7.1 — ISPS System Architecture: End-to-end data flow from document ingestion to interactive dashboard</div>
+</div>
+
+</body>
+</html>
